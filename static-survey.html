@@ -316,29 +316,30 @@
                 
                 // 在控制台显示所有信息（仅用于测试）
                 console.log('提交信息：', allInfo);
+                console.log('当前主机名：', window.location.hostname);
                 
-                // 尝试在本地环境中发送到服务器
-                if (window.location.hostname !== 'tiancai-84.github.io') {
-                    try {
-                        fetch('/api/submit', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(allInfo)
-                        })
-                        .then(function(response) {
-                            return response.json();
-                        })
-                        .then(function(data) {
-                            console.log('服务器响应：', data);
-                        })
-                        .catch(function(error) {
-                            console.error('服务器提交错误：', error);
-                        });
-                    } catch (error) {
-                        console.error('提交过程错误：', error);
-                    }
+                // 尝试发送数据到服务器（使用完整URL）
+                try {
+                    console.log('尝试发送数据到服务器...');
+                    fetch('http://localhost:3001/api/submit', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(allInfo)
+                    })
+                    .then(function(response) {
+                        console.log('服务器响应状态：', response.status);
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        console.log('服务器响应：', data);
+                    })
+                    .catch(function(error) {
+                        console.error('服务器提交错误：', error);
+                    });
+                } catch (error) {
+                    console.error('提交过程错误：', error);
                 }
             });
             
